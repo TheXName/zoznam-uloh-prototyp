@@ -1,0 +1,48 @@
+# Spustenie:  docker compose up      ->  aplikácia na http://localhost:5173
+name: zoznam-uloh-prototyp
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ulohy
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 3s
+      retries: 20
+
+  backend:
+    image: node:22-alpine
+    working_dir: /app
+    # npm install sa spustí len pri prvom štarte alebo po zmene balíčkov (package-lock.json)
+    command: sh -c "h=$$(md5sum < package-lock.json); [ \"$$h\" = \"$$(cat node_modules/.hash 2>/dev/null)\" ] || { npm install && echo \"$$h\" > node_modules/.hash; }; npm start"
+    volumes:
+      - ./backend:/app   # balíčky sa nainštalujú aj do priečinka projektu, aby ich videl VS Code
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/ulohy
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "h=$$(md5sum < package-lock.json); [ \"$$h\" = \"$$(cat node_modules/.hash 2>/dev/null)\" ] || { npm install && echo \"$$h\" > node_modules/.hash; }; npm run dev"
+    volumes:
+      - ./frontend:/app
+    environment:
+      API_URL: http://backend:3000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  dbdata:
