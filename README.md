@@ -161,7 +161,7 @@ erDiagram
 
 | Metóda | Cesta | Popis |
 |---|---|---|
-| `POST` | `/api/auth/register` | registrácia (meno, e-mail, heslo ≥ 8 znakov) |
+| `POST` | `/api/auth/register` | registrácia (meno, e-mail, heslo ≥ 10 znakov) |
 | `POST` | `/api/auth/login` | prihlásenie, vráti JWT token |
 | `GET` | `/api/auth/me` | prihlásený používateľ |
 | `GET` | `/api/tasks` | úlohy prihláseného používateľa |

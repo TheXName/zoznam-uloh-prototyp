@@ -92,7 +92,7 @@ function Login({ onLogin }: { onLogin: (u: User) => void }) {
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </label>
         <label>
-          Heslo
+          Heslo{register && ' (aspoň 10 znakov)'}
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </label>
         {error && <p className="error">{error}</p>}

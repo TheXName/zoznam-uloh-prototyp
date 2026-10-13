@@ -40,7 +40,7 @@ export class AuthController {
     const name = body.name?.trim();
     const email = body.email?.trim().toLowerCase();
     if (!name || !email?.includes('@')) throw new BadRequestException('Vyplňte meno a platný e-mail');
-    if (!body.password || body.password.length < 8) throw new BadRequestException('Heslo musí mať aspoň 8 znakov');
+    if (!body.password || body.password.length < 10) throw new BadRequestException('Heslo musí mať aspoň 10 znakov');
     if (await this.users.findOneBy({ email })) throw new BadRequestException('Účet s týmto e-mailom už existuje');
 
     const user = await this.users.save({ name, email, passwordHash: await bcrypt.hash(body.password, 10) });
