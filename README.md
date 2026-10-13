@@ -26,9 +26,15 @@ Projekt vznikol v predmete **Softvérové inžinierstvo I** na Ekonomickej unive
 
 ## Ukážka
 
-| Registrácia | Úlohy a Google kalendár | Mobil |
+| Registrácia | Úlohy a Google kalendár | Mobilný telefón |
 |:---:|:---:|:---:|
 | <img src="docs/screenshots/01-registracia.png" width="260"> | <img src="docs/screenshots/02-ulohy.png" width="260"> | <img src="docs/screenshots/03-mobil.png" width="150"> |
+
+Úloha „Odovzdať DNR“ s termínom 21. 10. 10:00 vytvorená v aplikácii a automaticky zapísaná do Google kalendára:
+
+<p align="center">
+  <img src="docs/screenshots/04-google-kalendar.png" alt="Udalosť vytvorená v Google kalendári" width="640">
+</p>
 
 ## Rýchle spustenie
 
@@ -47,6 +53,20 @@ Keď sa vo výpise objaví `Backend beží na http://localhost:3000/api`, otvort
 - Balíčky sa inštalujú aj do priečinkov projektu, takže VS Code rozpozná importy bez inštalácie Node.js.
 
 Bez kľúčov Google funguje všetko okrem tlačidla „Prepojiť Google kalendár“.
+
+## Spustenie na mobile
+
+Aplikácia beží na počítači, telefón ju otvorí v prehliadači cez lokálnu sieť.
+
+1. Na počítači spustite `docker compose up`.
+2. Zistite IP adresu počítača – v PowerShelli `ipconfig`, riadok **IPv4 Address** pri Wi-Fi adaptéri (napr. `192.168.1.25`).
+3. Pripojte telefón do tej istej siete (Wi-Fi, alebo počítač pripojte na hotspot telefónu).
+4. V prehliadači telefónu otvorte `http://192.168.1.25:5173` (s vašou IP adresou).
+
+Ak sa stránka neotvorí, povoľte Docker v bráne Windows Firewall pre súkromné siete. Univerzitné siete (napr. eduroam) často nedovolia zariadeniam vidieť sa navzájom – vtedy použite hotspot telefónu.
+
+> [!IMPORTANT]
+> **Prepojiť Google kalendár sa dá len na počítači.** Google po súhlase vráti používateľa na `http://localhost:3000`, čo na telefóne znamená samotný telefón, a súkromnú IP adresu ako návratovú adresu nepovoľuje. Stačí však kalendár prepojiť raz na počítači – udalosti potom zapisuje backend, takže úlohy vytvorené z telefónu sa do kalendára dostanú tiež. Prepojenie priamo z telefónu by vyžadovalo nasadenie na verejnú doménu s HTTPS.
 
 ## Prepojenie s Google kalendárom
 
@@ -177,6 +197,12 @@ erDiagram
 | Integrácia | Google Calendar API, OAuth 2.0 |
 | Prihlásenie | JWT, bcrypt |
 | Spustenie | Docker Compose |
+
+## Tím
+
+- Mark Kapchikaev ([@TheXName](https://github.com/TheXName))
+- Yan Denysov
+- Maksym Tiutiunnyk
 
 ---
 
